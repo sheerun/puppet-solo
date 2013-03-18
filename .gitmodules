@@ -1,0 +1,9 @@
+[submodule "vendor/puppet"]
+	path = vendor/puppet
+	url = https://github.com/puppetlabs/puppet.git
+[submodule "vendor/facter"]
+	path = vendor/facter
+	url = https://github.com/puppetlabs/facter.git
+[submodule "vendor/ruby-build"]
+	path = vendor/ruby-build
+	url = https://github.com/sstephenson/ruby-build.git
