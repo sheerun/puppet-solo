@@ -2,7 +2,7 @@
 
 Zero-config puppet executable for OS X and Ubuntu. It:
 
-* ensures that puppet is executed as root on Ubuntu
+* doesn't require root access
 * locally builds ruby 1.9.3
 * installs puppet executable
 * passes correct `--modulepath` option to puppet

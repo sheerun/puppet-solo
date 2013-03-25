@@ -17,7 +17,6 @@ PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 cd $PROJECT_DIR
 
 function main() {
-  ensure_root
   ensure_puppet
   ensure_submodules
   $PROJECT_DIR/vendor/ruby/bin/puppet $@ --modulepath="$PROJECT_DIR/modules"
@@ -37,12 +36,6 @@ function update() {
     }
   else
     e_success "Repository up-to-date"
-  fi
-}
-
-function ensure_root() {
-  if [[ ! "$OSTYPE" =~ ^darwin && "$(id -u)" != "0" ]]; then
-    panick "This script must be executed as root..."
   fi
 }
 
