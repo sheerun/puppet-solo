@@ -2,12 +2,17 @@
 
 # Puppet-solo
 
-Zero-config puppet executable for OS X and Ubuntu. It:
+Auto-installable puppet executables. They:
 
-* doesn't require root access
-* locally builds ruby 1.9.3
-* installs puppet executable
-* passes correct `--modulepath` option to puppet
+* dont't require root access
+* locally build ruby 1.9.3
+* passe correct `--modulepath` option to puppet
+
+## Available binaries
+
+* `puppet` - main executable, you are probably interested in `puppet apply`
+* `facter` - library for retrieving simple operating system facts
+* `hiera` - hierarhical key/value lookup tool for configuration data
 
 ## Requirements
 

@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -e
+
+# Define functions for nice messages
+function e_header()   { echo -e "\033[1m$@\033[0m"; }
+function e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
+function e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
+function e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
+
+# Save current directory to return to it later
+CURRENT_DIR="$PWD"
+function panick() { e_error "${1:-"Installation failed..."}" && cd "$CURRENT_DIR" && exit 1; }
+trap panick ERR
+
+# Establish and go to git repository path
+PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+cd $PROJECT_DIR
+
+function main() {
+  ensure_puppet
+  ensure_submodules
+  if [[ "$1" == "puppet" ]]; then
+    exec $PROJECT_DIR/vendor/ruby/bin/$@ --modulepath="$PROJECT_DIR/modules"
+  else
+    exec $PROJECT_DIR/vendor/ruby/bin/$@
+  fi
+}
+
+function update() {
+  ensure_git
+
+  e_header "Fetching updates from remote..."
+  git remote update 1> /dev/null
+
+  if [[ -n "$(git log HEAD..origin/master --oneline)" ]]; then
+    git log HEAD..origin/master --oneline
+    e_header "Pulling changes..."
+    git pull -u origin master || {
+      panick "Git pull failed. Try to resolve conflicts manually."
+    }
+  else
+    e_success "Repository up-to-date"
+  fi
+}
+
+function ensure_puppet() {
+  if [[ ! "$(type -P vendor/ruby/bin/puppet)" ]]; then
+    e_header "Installing puppet..."
+    ensure_ruby
+    vendor/ruby/bin/gem install puppet --no-ri --no-rdoc --bindir="$PROJECT_DIR/vendor/ruby/bin"
+  fi
+
+  if [[ ! "$(type -P vendor/ruby/bin/puppet)" ]]; then
+    panick "Automatic puppet installation failed..."
+  fi
+}
+
+function ensure_ruby() {
+  if [[ ! "$(type -P vendor/ruby/bin/ruby)" ]]; then
+    e_header "Installing ruby..."
+    ensure_submodules
+    ensure_build_tool
+    vendor/ruby-build/bin/ruby-build 1.9.3-p392 "$PROJECT_DIR/vendor/ruby"
+  fi
+
+  if [[ ! "$(type -P vendor/ruby/bin/ruby)" ]]; then
+    panick "Automatic ruby installation failed..."
+  fi
+}
+
+function ensure_submodules() {
+  ensure_git
+
+  if [[ -n "$(git submodule status --recursive | grep '^[^ ]')" ]]; then
+    git submodule update --init --recursive --quiet
+  fi
+
+  if [[ -n "$(git submodule status --recursive | grep '^[^ ]')" ]]; then
+    panick "Cannot update submodules..."
+  fi
+}
+
+function ensure_git() {
+  if [[ ! "$(type -P git)" ]]; then
+    panick "Puppet-solo requires git to be installed..."
+  fi
+}
+
+function ensure_build_tool() {
+  if [[ ! "$(type -P gcc)" ]]; then
+    if [[ "$OSTYPE" =~ ^darwin ]]; then
+      panick "The XCode Command Line Tools must be installed first..."
+    elif [[ "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
+      apt-get -qq install build-essential
+    fi
+  fi
+
+  if [[ ! "$(type -P gcc)" ]]; then
+    panick "Automatic gcc installation is not supported for this system..."
+  fi
+
+  if [[ "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
+    dpkg --status libssl-dev &> /dev/null || {
+      apt-get install -qq libssl-dev
+    }
+
+    dpkg --status zlib1g-dev &> /dev/null || {
+      apt-get install -qq zlib1g-dev
+    }
+  fi
+}
+
+main $@ && cd "$CURRENT_DIR"
