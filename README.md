@@ -14,10 +14,6 @@ Auto-installable puppet executables. They:
 * `facter` - library for retrieving simple operating system facts
 * `hiera` - hierarhical key/value lookup tool for configuration data
 
-## Requirements
-
-* `git` executable available
-
 ## Usage
 
 * fork and clone this repository
