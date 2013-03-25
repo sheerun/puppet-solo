@@ -1,1 +1,2 @@
+language: cpp
 script: bin/puppet apply manifests/site.pp
