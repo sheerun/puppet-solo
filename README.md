@@ -11,8 +11,6 @@ Zero-config puppet executable for OS X and Ubuntu. It:
 
 ## Requirements
 
-* Ubuntu or OSX
-* Root access for Ubuntu
 * `git` executable available
 
 ## Usage
