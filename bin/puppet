@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec ./run puppet $@
+exec $(dirname ${BASH_SOURCE[0]})/run puppet $@
