@@ -50,7 +50,7 @@ function ensure_puppet() {
   if [[ ! "$(type -P vendor/ruby/bin/puppet)" ]]; then
     e_header "Installing puppet..."
     ensure_ruby
-    vendor/ruby/bin/gem install puppet --no-ri --no-rdoc
+    vendor/ruby/bin/gem install puppet --no-ri --no-rdoc --bindir="$PROJECT_DIR/vendor/ruby/bin"
   fi
 
   if [[ ! "$(type -P vendor/ruby/bin/puppet)" ]]; then
