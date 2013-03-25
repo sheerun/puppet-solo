@@ -2,10 +2,10 @@
 
 Boilerplate and installer for puppet. It:
 
-* ensures that puppet is executed as root
+* ensures that puppet is executed as root on Ubuntu
 * locally builds ruby 1.9.3
 * installs puppet executable
-* passes correct `--modulepath` option
+* passes correct `--modulepath` option to puppet
 
 ## Requirements
 
