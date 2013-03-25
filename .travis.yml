@@ -1,0 +1,2 @@
+language: ruby
+script: bin/puppet apply manifests/site.pp
