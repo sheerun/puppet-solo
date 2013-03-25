@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/sheerun/puppet-solo.png?branch=master)](http://travis-ci.org/sheerun/puppet-solo)
+
 # Puppet-solo
 
 Zero-config puppet executable for OS X and Ubuntu. It:
