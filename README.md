@@ -1,6 +1,6 @@
 # Puppet-solo
 
-Boilerplate and installer for puppet. It:
+Zero-config puppet executable for OS X and Ubuntu. It:
 
 * ensures that puppet is executed as root on Ubuntu
 * locally builds ruby 1.9.3
