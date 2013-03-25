@@ -17,7 +17,7 @@ Zero-config puppet executable for OS X and Ubuntu. It:
 
 ## Usage
 
-* clone this repository
+* fork and clone this repository
 * change `manifests/site.pp`
 * run `bin/puppet apply manifests/site.pp`
 
