@@ -4,3 +4,6 @@
 [submodule "vendor/ruby-build"]
 	path = vendor/ruby-build
 	url = https://github.com/sstephenson/ruby-build.git
+[submodule "modules/htop"]
+	path = modules/htop
+	url = https://github.com/discovery/puppet-htop

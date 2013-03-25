@@ -19,7 +19,7 @@ cd $PROJECT_DIR
 function main() {
   ensure_root
   ensure_puppet
-  $PROJECT_DIR/vendor/ruby/bin/puppet $@
+  $PROJECT_DIR/vendor/ruby/bin/puppet $@ --modulepath="$PROJECT_DIR/modules"
 }
 
 function update() {
