@@ -1,2 +1,2 @@
 language: cpp
-script: bin/puppet apply manifests/site.pp && bin/facter && bin/hiera
+script: bin/puppet apply manifests/site.pp && bin/facter --version && bin/hiera --version
