@@ -74,7 +74,6 @@ function ensure_submodules() {
   ensure_git
 
   if [[ -n "$(git submodule status --recursive | grep '^[^ ]')" ]]; then
-    e_header "Updating submodules..."
     git submodule update --init --recursive --quiet
   fi
 
@@ -85,35 +84,7 @@ function ensure_submodules() {
 
 function ensure_git() {
   if [[ ! "$(type -P git)" ]]; then
-    e_header "Installing git..."
-    if [[ "$OSTYPE" =~ ^darwin ]]; then
-      ensure_homebrew
-      brew install git
-    elif [[ "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
-      ensure_build_tool
-      apt-get -qq install git-core
-    else
-      panick "Automatic git installation not supported for this system..."
-    fi
-  fi
-
-  if [[ ! "$(type -P git)" ]]; then
-    panick "Automatic git installation failed..."
-  fi
-}
-
-function ensure_homebrew() {
-  if [[ ! "$(type -P brew)" ]]; then
-    e_header "Installing homebrew..."
-    ensure_build_tool
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
-  fi
-
-  if [[ "$(type -P brew)" ]]; then
-    e_header "Updating homebrew..."
-    brew update
-  else
-    panick "Homebrew installation failed..."
+    panick "Puppet-solo requires git to be installed..."
   fi
 }
 
@@ -128,6 +99,16 @@ function ensure_build_tool() {
 
   if [[ ! "$(type -P gcc)" ]]; then
     panick "Automatic gcc installation is not supported for this system..."
+  fi
+
+  if [[ "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
+    dpkg --status libssl-dev &> /dev/null || {
+      apt-get install -qq libssl-dev
+    }
+
+    dpkg --status zlib1g-dev &> /dev/null || {
+      apt-get install -qq zlib1g-dev
+    }
   fi
 }
 
